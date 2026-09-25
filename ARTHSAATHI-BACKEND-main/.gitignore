@@ -1,0 +1,80 @@
+# =========================================
+# FinPilot / Arthsaathi Backend .gitignore
+# =========================================
+
+# Secrets & Environment Configurations
+.env
+.env.*
+!.env.example
+certs/
+*.pem
+*.key
+*.crt
+
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing, Coverage & Type Checking
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Databases & SQLite WAL
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+finpilot.db
+
+# Heavy Datasets, Model Checkpoints & Large Weights
+data/
+models/
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.onnx
+
+# Docker local logs & runtime
+*.log
+docker-compose.override.yml
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo

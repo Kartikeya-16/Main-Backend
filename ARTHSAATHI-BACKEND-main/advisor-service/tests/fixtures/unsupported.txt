@@ -1,0 +1,4 @@
+SYSTEM LOG FILE
+[2024-05-01 12:00:00] Server started on port 8080
+[2024-05-01 12:01:00] Database connected
+[2024-05-01 12:02:00] Job finished

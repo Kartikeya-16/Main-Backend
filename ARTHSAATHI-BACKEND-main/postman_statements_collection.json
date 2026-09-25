@@ -1,0 +1,143 @@
+{
+  "info": {
+    "_postman_id": "c71a3962-d922-4919-865b-6f8d169e0001",
+    "name": "Arthsaathi - Bank Statements API (Feature 1)",
+    "description": "API collection for bank statement upload, parsing, deduplication, viewing, and lifecycle management in Arthsaathi.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "1. Upload Bank Statement",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "file",
+              "type": "file",
+              "src": [],
+              "description": "Bank statement file (CSV, XLSX, or PDF up to 10 MB)"
+            },
+            {
+              "key": "password",
+              "value": "Secret123",
+              "type": "text",
+              "disabled": true,
+              "description": "Optional decryption password for password-protected PDFs"
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{base_url}}/statements/upload",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "statements",
+            "upload"
+          ]
+        },
+        "description": "Uploads and parses a bank statement (CSV, XLSX, PDF). Validates magic bytes, reconstructs chronological transactions, checks running balance arithmetic, masks account numbers, skips duplicates, and returns a preview of up to 20 transactions."
+      },
+      "response": []
+    },
+    {
+      "name": "2. List Uploaded Statements",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/statements",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "statements"
+          ]
+        },
+        "description": "Retrieves all bank statements uploaded by the authenticated user in descending order of upload date."
+      },
+      "response": []
+    },
+    {
+      "name": "3. Get Statement Transactions (Paginated)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/statements/{{statement_id}}/transactions?page=1&size=20",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "statements",
+            "{{statement_id}}",
+            "transactions"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "1",
+              "description": "Page number (1-indexed)"
+            },
+            {
+              "key": "size",
+              "value": "20",
+              "description": "Number of transactions per page (max 200)"
+            }
+          ]
+        },
+        "description": "Fetches a paginated, chronological list of transactions belonging to a specific statement owned by the user."
+      },
+      "response": []
+    },
+    {
+      "name": "4. Delete Statement (Cascade)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/statements/{{statement_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "statements",
+            "{{statement_id}}"
+          ]
+        },
+        "description": "Permanently deletes a bank statement and cascades deletion to all associated transaction records."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "eyJhbGciOi...",
+      "type": "string"
+    },
+    {
+      "key": "statement_id",
+      "value": "uuid-here",
+      "type": "string"
+    }
+  ]
+}
