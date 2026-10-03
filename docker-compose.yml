@@ -1,0 +1,104 @@
+services:
+  finpilot-backend:
+    build:
+      context: ./finpilot-backend
+      dockerfile: Dockerfile
+    container_name: arthsaathi_finpilot_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./finpilot-backend:/app
+      - ./certs:/app/certs
+    networks:
+      - arthsaathi-net
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  ml-service-1:
+    build:
+      context: ./ml-service-1
+      dockerfile: Dockerfile
+    container_name: arthsaathi_ml_service_1
+    restart: always
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./ml-service-1/app:/app/app
+      - ./ml-service-1/models:/app/models
+      - ./ml-service-1/data:/app/data
+    networks:
+      - arthsaathi-net
+
+  ml-service-2-translation:
+    build:
+      context: ./ml-service-2-translation
+      dockerfile: Dockerfile
+    container_name: arthsaathi_ml_service_2_translation
+    restart: always
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./ml-service-2-translation/app:/app/app
+      - ./ml-service-2-translation/data:/app/data
+    networks:
+      - arthsaathi-net
+
+  scheme-service-1:
+    build:
+      context: ./scheme-service-1
+      dockerfile: Dockerfile
+    container_name: arthsaathi_scheme_service_1
+    restart: always
+    ports:
+      - "8003:8003"
+    volumes:
+      - ./scheme-service-1/app:/app/app
+      - ./scheme-service-1/data:/app/data
+    networks:
+      - arthsaathi-net
+
+  ml-service-3-scam:
+    build:
+      context: ./ml-service-3-scam
+      dockerfile: Dockerfile
+    container_name: arthsaathi_ml_service_3_scam
+    restart: always
+    ports:
+      - "8004:8004"
+    volumes:
+      - ./ml-service-3-scam/app:/app/app
+      - ./ml-service-3-scam/artifacts:/app/artifacts
+    networks:
+      - arthsaathi-net
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8004/health')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  advisor-service:
+    build:
+      context: ./advisor-service
+      dockerfile: Dockerfile
+    container_name: arthsaathi_advisor_service
+    restart: always
+    ports:
+      - "8005:8005"
+    volumes:
+      - ./advisor-service/app:/app/app
+    networks:
+      - arthsaathi-net
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8005/health')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+networks:
+  arthsaathi-net:
+    driver: bridge
+

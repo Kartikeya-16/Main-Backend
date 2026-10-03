@@ -1,0 +1,12 @@
+services:
+  ml-service-1:
+    build: .
+    container_name: arthsaathi_ml_service_1
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./app:/app/app
+      - ./models:/app/models      # persist trained model outside container
+      - ./data:/app/data          # persist training data outside container
+    environment:
+      - PYTHONUNBUFFERED=1
