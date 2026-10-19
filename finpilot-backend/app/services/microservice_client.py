@@ -140,3 +140,81 @@ async def forward_statement_parse(
     except Exception:
         return {"raw_response": response.text}
 
+
+async def _call_advisor_endpoint(
+    path: str,
+    method: str = "GET",
+    json_data: Optional[Dict[str, Any]] = None,
+    timeout: float = 10.0,
+) -> Dict[str, Any]:
+    from app.core.config import settings
+
+    candidates = list(dict.fromkeys([
+        settings.ADVISOR_SERVICE_URL,
+        "http://advisor-service:8005",
+        "http://127.0.0.1:8005",
+        "http://localhost:8005",
+    ]))
+
+    last_exc = None
+    response = None
+
+    for base in candidates:
+        url = f"{base.rstrip('/')}/{path.lstrip('/')}"
+        try:
+            async with httpx.AsyncClient(timeout=timeout) as client:
+                response = await client.request(
+                    method=method,
+                    url=url,
+                    json=json_data,
+                )
+            if response is not None:
+                break
+        except httpx.RequestError as exc:
+            last_exc = exc
+            continue
+
+    if response is None:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Advisor service unavailable",
+        )
+
+    if response.is_error:
+        try:
+            err_json = response.json()
+            detail = err_json.get("detail", response.text)
+        except Exception:
+            detail = response.text or f"Advisor service error ({response.status_code})"
+
+        raise HTTPException(
+            status_code=response.status_code,
+            detail=detail,
+        )
+
+    try:
+        return response.json()
+    except Exception:
+        return {"raw_response": response.text}
+
+
+async def advisor_questionnaire() -> Dict[str, Any]:
+    """
+    Proxies request to GET /advisor/questionnaire on advisor-service.
+    """
+    return await _call_advisor_endpoint(path="/advisor/questionnaire", method="GET")
+
+
+async def advisor_meta() -> Dict[str, Any]:
+    """
+    Proxies request to GET /advisor/meta on advisor-service.
+    """
+    return await _call_advisor_endpoint(path="/advisor/meta", method="GET")
+
+
+async def advisor_plan(payload: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Proxies request to POST /advisor/plan on advisor-service.
+    """
+    return await _call_advisor_endpoint(path="/advisor/plan", method="POST", json_data=payload)
+

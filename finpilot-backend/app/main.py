@@ -8,6 +8,7 @@ from app.api.financial_twin import router as financial_twin_router
 from app.api.routes.ml import router as ml_proxy_router
 from app.api.routes.statements import router as statements_router
 from app.api.routes.scam import router as scam_router
+from app.api.routes.advisor import router as advisor_router
 from app.database.connection import get_db, Base, engine
 import app.models.user  # noqa: F401
 import app.models.financial_twin  # noqa: F401
@@ -40,6 +41,7 @@ app.include_router(financial_twin_router)
 app.include_router(ml_proxy_router)
 app.include_router(statements_router)
 app.include_router(scam_router)
+app.include_router(advisor_router)
 
 
 

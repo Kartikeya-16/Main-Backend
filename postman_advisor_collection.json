@@ -1,0 +1,148 @@
+{
+  "info": {
+    "_postman_id": "a18b5231-1e92-4f9e-9d8a-7b3c21a00001",
+    "name": "Arthsaathi - Financial Advisor API (Feature 2)",
+    "description": "API collection for Financial Advisor questionnaire, metadata, financial twin profile draft pre-filling, and comprehensive plan generation.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "0. Login / Obtain JWT Token",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"advisor.test@arthsaathi.dev\",\n  \"password\": \"TestPassword123!\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/auth/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        },
+        "description": "Authenticates the test user and returns an access_token. Copy the token into the collection access_token variable."
+      },
+      "response": []
+    },
+    {
+      "name": "1. GET Advisor Questionnaire",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/advisor/questionnaire",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "advisor",
+            "questionnaire"
+          ]
+        },
+        "description": "Proxies to the Advisor Service (port 8005) to fetch the 5 standard SEBI-aligned risk assessment questions with options and score weights."
+      },
+      "response": []
+    },
+    {
+      "name": "2. GET Advisor Metadata",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/advisor/meta",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "advisor",
+            "meta"
+          ]
+        },
+        "description": "Proxies to the Advisor Service to retrieve current reference asset categories, small savings schemes, tax deduction limits, and FD rates freshness."
+      },
+      "response": []
+    },
+    {
+      "name": "3. GET Advisor Profile Draft",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/advisor/profile-draft",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "advisor",
+            "profile-draft"
+          ]
+        },
+        "description": "Builds a pre-filled advisor profile from the logged-in user's Financial Twin (income, expenses normalized to monthly, liquid assets as emergency fund, liabilities, goals, and flags missing fields). Returns 404 if no Twin exists."
+      },
+      "response": []
+    },
+    {
+      "name": "4. POST Advisor Plan (Persona p04)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"age\": 32,\n  \"monthly_income_inr\": 150000,\n  \"other_monthly_inflow_inr\": 0,\n  \"monthly_expenses_inr\": 80000,\n  \"emergency_fund_inr\": 400000,\n  \"liabilities\": [\n    {\n      \"type\": \"home_loan\",\n      \"outstanding_inr\": 4000000,\n      \"interest_rate_pct\": 8.5,\n      \"emi_inr\": 35000\n    }\n  ],\n  \"insurance\": {\n    \"term_cover_inr\": 10000000,\n    \"health_cover_inr\": 1000000\n  },\n  \"dependents\": 2,\n  \"daughters_under_10\": 1,\n  \"tax_regime\": \"old\",\n  \"goals\": [\n    {\n      \"goal_id\": \"child_education\",\n      \"name\": \"Daughter's education\",\n      \"target_inr\": 2500000,\n      \"years\": 15,\n      \"current_savings_inr\": 100000\n    },\n    {\n      \"goal_id\": \"car\",\n      \"name\": \"Car upgrade\",\n      \"target_inr\": 800000,\n      \"years\": 4,\n      \"current_savings_inr\": 0\n    },\n    {\n      \"goal_id\": \"vacation\",\n      \"name\": \"Family vacation\",\n      \"target_inr\": 200000,\n      \"years\": 1,\n      \"current_savings_inr\": 0\n    }\n  ],\n  \"risk_answers\": [\n    3,\n    3,\n    3,\n    2,\n    3\n  ]\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/advisor/plan",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "advisor",
+            "plan"
+          ]
+        },
+        "description": "Proxies the completed financial profile to the Advisor Service engine to generate a prioritized financial plan, goal asset allocation, SIP requirements, and recommendations. Demonstrates persona p04 where first_action evaluates to 'term_insurance_gap'."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "eyJhbGciOi...",
+      "type": "string"
+    }
+  ]
+}
