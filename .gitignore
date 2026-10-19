@@ -54,8 +54,10 @@ htmlcov/
 finpilot.db
 
 # Heavy Datasets, Model Checkpoints & Large Weights
-data/
-models/
+*.pkl
+*.joblib
+ml-service-*/models/
+ml-service-*/data/
 *.bin
 *.safetensors
 *.pt
