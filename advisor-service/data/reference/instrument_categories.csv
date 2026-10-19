@@ -1,0 +1,17 @@
+category_id,category_name,asset_class,bucket,min_horizon_years,risk_level,assumed_return_low_pct,assumed_return_high_pct,liquidity,lock_in_years,tax_deduction_eligible,return_source,use_for
+savings_account,Bank savings account,cash,emergency,0,1,2.50,3.00,instant,0,false,assumption,first layer of emergency fund
+liquid_fund,Liquid mutual fund,debt,emergency,0,1,5.50,6.50,t_plus_1,0,false,assumption,emergency fund beyond one month of expenses
+bank_fd,Bank fixed deposit,debt,short,0.5,1,,,break_with_penalty,0,false,fd_rates.csv,short goals and emergency ladder; stay within DICGC cover per bank
+tax_saver_fd,Tax-saver bank fixed deposit,debt,medium,5,1,,,locked,5,true,fd_rates.csv,Section 123 basket for old-regime taxpayers
+post_office_td,Post Office time deposit,debt,short,1,1,,,break_with_penalty,0.5,false,small_savings.csv,sovereign alternative to bank FD
+short_duration_debt_fund,Short duration debt fund,debt,short,1,2,6.00,7.50,t_plus_1,0,false,assumption,short and medium goals
+conservative_hybrid_fund,Conservative hybrid fund,hybrid,medium,3,3,7.00,8.50,t_plus_1,0,false,assumption,medium goals for conservative profiles
+balanced_advantage_fund,Balanced advantage fund,hybrid,medium,3,3,8.00,10.00,t_plus_2,0,false,assumption,medium goals for moderate profiles
+index_fund_large_cap,Large-cap index fund,equity,long,5,4,10.00,12.00,t_plus_2,0,false,assumption,core equity holding for long goals
+flexi_cap_fund,Flexi-cap fund,equity,long,5,4,10.00,13.00,t_plus_2,0,false,assumption,satellite equity for aggressive profiles
+elss_fund,ELSS tax-saving fund,equity,long,5,4,10.00,12.00,locked,3,true,assumption,equity plus Section 123 deduction (old regime only)
+gold_etf,Gold ETF or gold fund,gold,long,5,3,6.00,9.00,t_plus_2,0,false,assumption,diversifier capped at 10 percent of a long-goal portfolio
+ppf_account,Public Provident Fund,debt,long,15,1,,,locked,15,true,small_savings.csv,debt core for long goals; tax-free
+nsc_certificate,National Savings Certificate,debt,medium,5,1,,,locked,5,true,small_savings.csv,medium goals for old-regime taxpayers
+scss_account,Senior Citizens Savings Scheme,debt,income,5,1,,,locked,5,true,small_savings.csv,regular income for 60 plus
+ssy_account,Sukanya Samriddhi Yojana,debt,long,21,1,,,locked,21,true,small_savings.csv,daughter's education or marriage goal

@@ -4,12 +4,15 @@ from app.schemas import ParsedStatement
 from app.readers import read_statement_raw
 from app.parsers.registry import get_parser_for_statement
 from app.parsers.llm_parser import parse_statement_with_llm
+from app.advisor.router import router as advisor_router
 
 app = FastAPI(
     title="Arthsaathi Advisor Service",
     description="Bank statement upload, normalization, parsing, and balance reconciliation service",
     version="1.0.0",
 )
+
+app.include_router(advisor_router)
 
 
 @app.get("/health", tags=["Health"])

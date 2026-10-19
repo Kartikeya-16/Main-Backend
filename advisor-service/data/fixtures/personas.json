@@ -1,0 +1,1475 @@
+{
+  "version": 1,
+  "as_of": "2026-10-19",
+  "notes": "Golden test profiles for the advisor engine. 'expected' blocks come from tools/validate_datasets.py (reference rules) and were reviewed by hand. All money is in rupees; goal targets are in today's rupees.",
+  "personas": [
+    {
+      "persona_id": "p01_student_no_income",
+      "description": "College student, no earned income, Rs 10k monthly allowance from parents, covered by parents' health floater",
+      "tests": "no-income cap forces conservative even with an aggressive score",
+      "age": 21,
+      "monthly_income_inr": 0,
+      "other_monthly_inflow_inr": 10000,
+      "monthly_expenses_inr": 8000,
+      "emergency_fund_inr": 15000,
+      "liabilities": [],
+      "insurance": {
+        "term_cover_inr": 0,
+        "health_cover_inr": 500000
+      },
+      "dependents": 0,
+      "daughters_under_10": 0,
+      "tax_regime": "new",
+      "goals": [
+        {
+          "goal_id": "laptop",
+          "name": "New laptop",
+          "target_inr": 40000,
+          "years": 1,
+          "current_savings_inr": 20000
+        }
+      ],
+      "risk_answers": [
+        4,
+        4,
+        1,
+        2,
+        4
+      ],
+      "expected": {
+        "monthly_surplus_inr": 2000,
+        "emergency_fund_months": 1.9,
+        "flags": [
+          "emergency_fund_critical"
+        ],
+        "first_action": "emergency_fund_critical",
+        "risk_score": 15,
+        "risk_profile": "conservative",
+        "goals": [
+          {
+            "goal_id": "laptop",
+            "bucket": "short",
+            "equity_share_pct": 0,
+            "required_monthly_sip_inr": 1707
+          }
+        ],
+        "total_required_monthly_sip_inr": 1707,
+        "goals_affordable": true,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp"
+        ],
+        "tax_saving_relevant": false
+      }
+    },
+    {
+      "persona_id": "p02_first_jobber_credit_card",
+      "description": "First job, carrying credit card debt, only small employer health cover",
+      "tests": "high-interest debt and thin emergency fund; health gap",
+      "age": 23,
+      "monthly_income_inr": 45000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 30000,
+      "emergency_fund_inr": 20000,
+      "liabilities": [
+        {
+          "type": "credit_card",
+          "outstanding_inr": 60000,
+          "interest_rate_pct": 36.0,
+          "emi_inr": 6000
+        }
+      ],
+      "insurance": {
+        "term_cover_inr": 0,
+        "health_cover_inr": 300000
+      },
+      "dependents": 0,
+      "daughters_under_10": 0,
+      "tax_regime": "new",
+      "goals": [
+        {
+          "goal_id": "bike",
+          "name": "Two-wheeler",
+          "target_inr": 120000,
+          "years": 2,
+          "current_savings_inr": 0
+        }
+      ],
+      "risk_answers": [
+        2,
+        2,
+        3,
+        1,
+        3
+      ],
+      "expected": {
+        "monthly_surplus_inr": 9000,
+        "emergency_fund_months": 0.6,
+        "flags": [
+          "emergency_fund_critical",
+          "high_interest_debt",
+          "health_insurance_gap"
+        ],
+        "first_action": "emergency_fund_critical",
+        "risk_score": 11,
+        "risk_profile": "moderate",
+        "goals": [
+          {
+            "goal_id": "bike",
+            "bucket": "short",
+            "equity_share_pct": 0,
+            "required_monthly_sip_inr": 5276
+          }
+        ],
+        "total_required_monthly_sip_inr": 5276,
+        "goals_affordable": true,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp"
+        ],
+        "tax_saving_relevant": false
+      }
+    },
+    {
+      "persona_id": "p03_young_saver_no_debt",
+      "description": "Young professional with full emergency fund, no debt, long retirement goal",
+      "tests": "no gaps; aggressive; one long and one short goal",
+      "age": 26,
+      "monthly_income_inr": 80000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 35000,
+      "emergency_fund_inr": 300000,
+      "liabilities": [],
+      "insurance": {
+        "term_cover_inr": 0,
+        "health_cover_inr": 500000
+      },
+      "dependents": 0,
+      "daughters_under_10": 0,
+      "tax_regime": "new",
+      "goals": [
+        {
+          "goal_id": "retirement",
+          "name": "Retirement corpus",
+          "target_inr": 10000000,
+          "years": 30,
+          "current_savings_inr": 50000
+        },
+        {
+          "goal_id": "europe_trip",
+          "name": "Europe trip",
+          "target_inr": 300000,
+          "years": 2,
+          "current_savings_inr": 0
+        }
+      ],
+      "risk_answers": [
+        4,
+        4,
+        3,
+        3,
+        4
+      ],
+      "expected": {
+        "monthly_surplus_inr": 45000,
+        "emergency_fund_months": 8.6,
+        "flags": [],
+        "first_action": "invest_for_goals",
+        "risk_score": 18,
+        "risk_profile": "aggressive",
+        "goals": [
+          {
+            "goal_id": "retirement",
+            "bucket": "long",
+            "equity_share_pct": 80,
+            "required_monthly_sip_inr": 29096
+          },
+          {
+            "goal_id": "europe_trip",
+            "bucket": "short",
+            "equity_share_pct": 0,
+            "required_monthly_sip_inr": 13190
+          }
+        ],
+        "total_required_monthly_sip_inr": 42286,
+        "goals_affordable": true,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp"
+        ],
+        "tax_saving_relevant": false
+      }
+    },
+    {
+      "persona_id": "p04_young_family_three_goals",
+      "description": "Married with a young daughter, home loan, three goals",
+      "tests": "emergency gap, term insurance gap, SSY eligible, old regime",
+      "age": 32,
+      "monthly_income_inr": 150000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 80000,
+      "emergency_fund_inr": 400000,
+      "liabilities": [
+        {
+          "type": "home_loan",
+          "outstanding_inr": 4000000,
+          "interest_rate_pct": 8.5,
+          "emi_inr": 35000
+        }
+      ],
+      "insurance": {
+        "term_cover_inr": 10000000,
+        "health_cover_inr": 1000000
+      },
+      "dependents": 2,
+      "daughters_under_10": 1,
+      "tax_regime": "old",
+      "goals": [
+        {
+          "goal_id": "child_education",
+          "name": "Daughter's education",
+          "target_inr": 2500000,
+          "years": 15,
+          "current_savings_inr": 100000
+        },
+        {
+          "goal_id": "car",
+          "name": "Car upgrade",
+          "target_inr": 800000,
+          "years": 4,
+          "current_savings_inr": 0
+        },
+        {
+          "goal_id": "vacation",
+          "name": "Family vacation",
+          "target_inr": 200000,
+          "years": 1,
+          "current_savings_inr": 0
+        }
+      ],
+      "risk_answers": [
+        3,
+        3,
+        3,
+        2,
+        3
+      ],
+      "expected": {
+        "monthly_surplus_inr": 35000,
+        "emergency_fund_months": 3.5,
+        "flags": [
+          "term_insurance_gap",
+          "emergency_fund_gap"
+        ],
+        "first_action": "term_insurance_gap",
+        "risk_score": 14,
+        "risk_profile": "moderate",
+        "goals": [
+          {
+            "goal_id": "child_education",
+            "bucket": "long",
+            "equity_share_pct": 60,
+            "required_monthly_sip_inr": 15469
+          },
+          {
+            "goal_id": "car",
+            "bucket": "medium",
+            "equity_share_pct": 20,
+            "required_monthly_sip_inr": 18220
+          },
+          {
+            "goal_id": "vacation",
+            "bucket": "short",
+            "equity_share_pct": 0,
+            "required_monthly_sip_inr": 17147
+          }
+        ],
+        "total_required_monthly_sip_inr": 50836,
+        "goals_affordable": false,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp",
+          "ssy"
+        ],
+        "tax_saving_relevant": true
+      }
+    },
+    {
+      "persona_id": "p05_budget_deficit",
+      "description": "Spends more than earns because of a personal loan EMI",
+      "tests": "budget deficit outranks every other flag",
+      "age": 29,
+      "monthly_income_inr": 35000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 32000,
+      "emergency_fund_inr": 5000,
+      "liabilities": [
+        {
+          "type": "personal_loan",
+          "outstanding_inr": 250000,
+          "interest_rate_pct": 14.0,
+          "emi_inr": 8000
+        }
+      ],
+      "insurance": {
+        "term_cover_inr": 0,
+        "health_cover_inr": 0
+      },
+      "dependents": 0,
+      "daughters_under_10": 0,
+      "tax_regime": "new",
+      "goals": [
+        {
+          "goal_id": "savings_buffer",
+          "name": "Rainy day savings",
+          "target_inr": 50000,
+          "years": 1,
+          "current_savings_inr": 0
+        }
+      ],
+      "risk_answers": [
+        2,
+        2,
+        2,
+        1,
+        2
+      ],
+      "expected": {
+        "monthly_surplus_inr": -5000,
+        "emergency_fund_months": 0.1,
+        "flags": [
+          "budget_deficit",
+          "emergency_fund_critical",
+          "high_interest_debt",
+          "health_insurance_gap"
+        ],
+        "first_action": "budget_deficit",
+        "risk_score": 9,
+        "risk_profile": "conservative",
+        "goals": [
+          {
+            "goal_id": "savings_buffer",
+            "bucket": "short",
+            "equity_share_pct": 0,
+            "required_monthly_sip_inr": 4287
+          }
+        ],
+        "total_required_monthly_sip_inr": 4287,
+        "goals_affordable": false,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp"
+        ],
+        "tax_saving_relevant": false
+      }
+    },
+    {
+      "persona_id": "p06_asset_rich_no_emergency_fund",
+      "description": "High earner with property and shares but almost no liquid cash",
+      "tests": "critical emergency fund despite large assets",
+      "age": 40,
+      "monthly_income_inr": 200000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 90000,
+      "emergency_fund_inr": 50000,
+      "liabilities": [],
+      "insurance": {
+        "term_cover_inr": 30000000,
+        "health_cover_inr": 1500000
+      },
+      "dependents": 1,
+      "daughters_under_10": 0,
+      "tax_regime": "new",
+      "goals": [
+        {
+          "goal_id": "retirement",
+          "name": "Retirement",
+          "target_inr": 30000000,
+          "years": 18,
+          "current_savings_inr": 2000000
+        }
+      ],
+      "risk_answers": [
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "expected": {
+        "monthly_surplus_inr": 110000,
+        "emergency_fund_months": 0.6,
+        "flags": [
+          "emergency_fund_critical"
+        ],
+        "first_action": "emergency_fund_critical",
+        "risk_score": 17,
+        "risk_profile": "aggressive",
+        "goals": [
+          {
+            "goal_id": "retirement",
+            "bucket": "long",
+            "equity_share_pct": 80,
+            "required_monthly_sip_inr": 136495
+          }
+        ],
+        "total_required_monthly_sip_inr": 136495,
+        "goals_affordable": false,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp"
+        ],
+        "tax_saving_relevant": false
+      }
+    },
+    {
+      "persona_id": "p07_retiree_pension",
+      "description": "Retired, pension income, comfortable emergency fund",
+      "tests": "age cap moderates an aggressive score; SCSS eligible",
+      "age": 63,
+      "monthly_income_inr": 40000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 30000,
+      "emergency_fund_inr": 300000,
+      "liabilities": [],
+      "insurance": {
+        "term_cover_inr": 0,
+        "health_cover_inr": 500000
+      },
+      "dependents": 0,
+      "daughters_under_10": 0,
+      "tax_regime": "new",
+      "goals": [
+        {
+          "goal_id": "grandchild_gift",
+          "name": "Gift for grandchild",
+          "target_inr": 200000,
+          "years": 3,
+          "current_savings_inr": 0
+        }
+      ],
+      "risk_answers": [
+        4,
+        4,
+        3,
+        3,
+        4
+      ],
+      "expected": {
+        "monthly_surplus_inr": 10000,
+        "emergency_fund_months": 10.0,
+        "flags": [],
+        "first_action": "invest_for_goals",
+        "risk_score": 18,
+        "risk_profile": "moderate",
+        "goals": [
+          {
+            "goal_id": "grandchild_gift",
+            "bucket": "medium",
+            "equity_share_pct": 20,
+            "required_monthly_sip_inr": 5948
+          }
+        ],
+        "total_required_monthly_sip_inr": 5948,
+        "goals_affordable": true,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp",
+          "scss"
+        ],
+        "tax_saving_relevant": false
+      }
+    },
+    {
+      "persona_id": "p08_senior_conservative",
+      "description": "Older retiree with modest pension and low health cover",
+      "tests": "emergency gap and health gap for a senior; SCSS eligible",
+      "age": 68,
+      "monthly_income_inr": 25000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 22000,
+      "emergency_fund_inr": 100000,
+      "liabilities": [],
+      "insurance": {
+        "term_cover_inr": 0,
+        "health_cover_inr": 300000
+      },
+      "dependents": 0,
+      "daughters_under_10": 0,
+      "tax_regime": "new",
+      "goals": [
+        {
+          "goal_id": "medical_reserve",
+          "name": "Medical reserve",
+          "target_inr": 60000,
+          "years": 2,
+          "current_savings_inr": 0
+        }
+      ],
+      "risk_answers": [
+        1,
+        1,
+        2,
+        1,
+        1
+      ],
+      "expected": {
+        "monthly_surplus_inr": 3000,
+        "emergency_fund_months": 4.5,
+        "flags": [
+          "health_insurance_gap",
+          "emergency_fund_gap"
+        ],
+        "first_action": "health_insurance_gap",
+        "risk_score": 6,
+        "risk_profile": "conservative",
+        "goals": [
+          {
+            "goal_id": "medical_reserve",
+            "bucket": "short",
+            "equity_share_pct": 0,
+            "required_monthly_sip_inr": 2638
+          }
+        ],
+        "total_required_monthly_sip_inr": 2638,
+        "goals_affordable": true,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp",
+          "scss"
+        ],
+        "tax_saving_relevant": false
+      }
+    },
+    {
+      "persona_id": "p09_mid_career_home_loan_only",
+      "description": "Mid-career, only a low-rate home loan, well insured",
+      "tests": "home loan below 12% is not flagged; all foundations clear",
+      "age": 38,
+      "monthly_income_inr": 300000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 100000,
+      "emergency_fund_inr": 1000000,
+      "liabilities": [
+        {
+          "type": "home_loan",
+          "outstanding_inr": 6000000,
+          "interest_rate_pct": 8.75,
+          "emi_inr": 60000
+        }
+      ],
+      "insurance": {
+        "term_cover_inr": 50000000,
+        "health_cover_inr": 1500000
+      },
+      "dependents": 3,
+      "daughters_under_10": 0,
+      "tax_regime": "old",
+      "goals": [
+        {
+          "goal_id": "retirement",
+          "name": "Retirement",
+          "target_inr": 40000000,
+          "years": 22,
+          "current_savings_inr": 3000000
+        },
+        {
+          "goal_id": "child_education",
+          "name": "Child's education",
+          "target_inr": 4000000,
+          "years": 10,
+          "current_savings_inr": 500000
+        }
+      ],
+      "risk_answers": [
+        4,
+        3,
+        4,
+        4,
+        4
+      ],
+      "expected": {
+        "monthly_surplus_inr": 140000,
+        "emergency_fund_months": 6.2,
+        "flags": [],
+        "first_action": "invest_for_goals",
+        "risk_score": 19,
+        "risk_profile": "aggressive",
+        "goals": [
+          {
+            "goal_id": "retirement",
+            "bucket": "long",
+            "equity_share_pct": 80,
+            "required_monthly_sip_inr": 142694
+          },
+          {
+            "goal_id": "child_education",
+            "bucket": "long",
+            "equity_share_pct": 80,
+            "required_monthly_sip_inr": 30213
+          }
+        ],
+        "total_required_monthly_sip_inr": 172907,
+        "goals_affordable": false,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp"
+        ],
+        "tax_saving_relevant": true
+      }
+    },
+    {
+      "persona_id": "p10_gig_worker",
+      "description": "Freelance delivery and design work, irregular income, no insurance",
+      "tests": "critical emergency fund for irregular income",
+      "age": 27,
+      "monthly_income_inr": 30000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 22000,
+      "emergency_fund_inr": 30000,
+      "liabilities": [],
+      "insurance": {
+        "term_cover_inr": 0,
+        "health_cover_inr": 0
+      },
+      "dependents": 0,
+      "daughters_under_10": 0,
+      "tax_regime": "new",
+      "goals": [
+        {
+          "goal_id": "course",
+          "name": "Skills course",
+          "target_inr": 50000,
+          "years": 1,
+          "current_savings_inr": 0
+        }
+      ],
+      "risk_answers": [
+        2,
+        2,
+        2,
+        1,
+        2
+      ],
+      "expected": {
+        "monthly_surplus_inr": 8000,
+        "emergency_fund_months": 1.4,
+        "flags": [
+          "emergency_fund_critical",
+          "health_insurance_gap"
+        ],
+        "first_action": "emergency_fund_critical",
+        "risk_score": 9,
+        "risk_profile": "conservative",
+        "goals": [
+          {
+            "goal_id": "course",
+            "bucket": "short",
+            "equity_share_pct": 0,
+            "required_monthly_sip_inr": 4287
+          }
+        ],
+        "total_required_monthly_sip_inr": 4287,
+        "goals_affordable": true,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp"
+        ],
+        "tax_saving_relevant": false
+      }
+    },
+    {
+      "persona_id": "p11_card_and_personal_loan",
+      "description": "Two expensive debts and a dependent parent",
+      "tests": "multiple high-interest debts; zero-target goal needs no SIP",
+      "age": 34,
+      "monthly_income_inr": 70000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 40000,
+      "emergency_fund_inr": 60000,
+      "liabilities": [
+        {
+          "type": "credit_card",
+          "outstanding_inr": 100000,
+          "interest_rate_pct": 42.0,
+          "emi_inr": 5000
+        },
+        {
+          "type": "personal_loan",
+          "outstanding_inr": 300000,
+          "interest_rate_pct": 15.0,
+          "emi_inr": 10000
+        }
+      ],
+      "insurance": {
+        "term_cover_inr": 0,
+        "health_cover_inr": 500000
+      },
+      "dependents": 1,
+      "daughters_under_10": 0,
+      "tax_regime": "new",
+      "goals": [
+        {
+          "goal_id": "debt_free",
+          "name": "Become debt free",
+          "target_inr": 0,
+          "years": 1,
+          "current_savings_inr": 0
+        }
+      ],
+      "risk_answers": [
+        2,
+        2,
+        3,
+        2,
+        2
+      ],
+      "expected": {
+        "monthly_surplus_inr": 15000,
+        "emergency_fund_months": 1.1,
+        "flags": [
+          "emergency_fund_critical",
+          "high_interest_debt",
+          "term_insurance_gap"
+        ],
+        "first_action": "emergency_fund_critical",
+        "risk_score": 11,
+        "risk_profile": "moderate",
+        "goals": [
+          {
+            "goal_id": "debt_free",
+            "bucket": "short",
+            "equity_share_pct": 0,
+            "required_monthly_sip_inr": 0
+          }
+        ],
+        "total_required_monthly_sip_inr": 0,
+        "goals_affordable": true,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp"
+        ],
+        "tax_saving_relevant": false
+      }
+    },
+    {
+      "persona_id": "p12_newlyweds_down_payment",
+      "description": "Dual-income couple saving for a house down payment",
+      "tests": "no dependents so no term check; medium goal",
+      "age": 30,
+      "monthly_income_inr": 180000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 70000,
+      "emergency_fund_inr": 600000,
+      "liabilities": [],
+      "insurance": {
+        "term_cover_inr": 0,
+        "health_cover_inr": 1000000
+      },
+      "dependents": 0,
+      "daughters_under_10": 0,
+      "tax_regime": "new",
+      "goals": [
+        {
+          "goal_id": "house_down_payment",
+          "name": "House down payment",
+          "target_inr": 2000000,
+          "years": 4,
+          "current_savings_inr": 300000
+        }
+      ],
+      "risk_answers": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "expected": {
+        "monthly_surplus_inr": 110000,
+        "emergency_fund_months": 8.6,
+        "flags": [],
+        "first_action": "invest_for_goals",
+        "risk_score": 15,
+        "risk_profile": "aggressive",
+        "goals": [
+          {
+            "goal_id": "house_down_payment",
+            "bucket": "medium",
+            "equity_share_pct": 40,
+            "required_monthly_sip_inr": 37670
+          }
+        ],
+        "total_required_monthly_sip_inr": 37670,
+        "goals_affordable": true,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp"
+        ],
+        "tax_saving_relevant": false
+      }
+    },
+    {
+      "persona_id": "p13_single_parent_daughter",
+      "description": "Single parent with a 6-year-old daughter",
+      "tests": "SSY eligible; two long goals; foundations clear",
+      "age": 36,
+      "monthly_income_inr": 90000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 55000,
+      "emergency_fund_inr": 400000,
+      "liabilities": [],
+      "insurance": {
+        "term_cover_inr": 15000000,
+        "health_cover_inr": 500000
+      },
+      "dependents": 1,
+      "daughters_under_10": 1,
+      "tax_regime": "old",
+      "goals": [
+        {
+          "goal_id": "daughter_education",
+          "name": "Daughter's education",
+          "target_inr": 3000000,
+          "years": 12,
+          "current_savings_inr": 200000
+        },
+        {
+          "goal_id": "daughter_wedding",
+          "name": "Daughter's wedding",
+          "target_inr": 2000000,
+          "years": 20,
+          "current_savings_inr": 0
+        }
+      ],
+      "risk_answers": [
+        3,
+        2,
+        3,
+        2,
+        3
+      ],
+      "expected": {
+        "monthly_surplus_inr": 35000,
+        "emergency_fund_months": 7.3,
+        "flags": [],
+        "first_action": "invest_for_goals",
+        "risk_score": 13,
+        "risk_profile": "moderate",
+        "goals": [
+          {
+            "goal_id": "daughter_education",
+            "bucket": "long",
+            "equity_share_pct": 60,
+            "required_monthly_sip_inr": 21936
+          },
+          {
+            "goal_id": "daughter_wedding",
+            "bucket": "long",
+            "equity_share_pct": 60,
+            "required_monthly_sip_inr": 10103
+          }
+        ],
+        "total_required_monthly_sip_inr": 32039,
+        "goals_affordable": true,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp",
+          "ssy"
+        ],
+        "tax_saving_relevant": true
+      }
+    },
+    {
+      "persona_id": "p14_high_earner_old_regime",
+      "description": "Senior professional on the old tax regime",
+      "tests": "large long goal; tax-saving relevant",
+      "age": 45,
+      "monthly_income_inr": 400000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 150000,
+      "emergency_fund_inr": 1000000,
+      "liabilities": [],
+      "insurance": {
+        "term_cover_inr": 60000000,
+        "health_cover_inr": 2000000
+      },
+      "dependents": 2,
+      "daughters_under_10": 0,
+      "tax_regime": "old",
+      "goals": [
+        {
+          "goal_id": "retirement",
+          "name": "Retirement",
+          "target_inr": 50000000,
+          "years": 15,
+          "current_savings_inr": 10000000
+        }
+      ],
+      "risk_answers": [
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "expected": {
+        "monthly_surplus_inr": 250000,
+        "emergency_fund_months": 6.7,
+        "flags": [],
+        "first_action": "invest_for_goals",
+        "risk_score": 20,
+        "risk_profile": "aggressive",
+        "goals": [
+          {
+            "goal_id": "retirement",
+            "bucket": "long",
+            "equity_share_pct": 80,
+            "required_monthly_sip_inr": 210562
+          }
+        ],
+        "total_required_monthly_sip_inr": 210562,
+        "goals_affordable": true,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp"
+        ],
+        "tax_saving_relevant": true
+      }
+    },
+    {
+      "persona_id": "p15_near_retirement",
+      "description": "Three years from retirement, under-insured for a dependent spouse",
+      "tests": "term gap; retirement goal falls in medium bucket",
+      "age": 57,
+      "monthly_income_inr": 180000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 90000,
+      "emergency_fund_inr": 600000,
+      "liabilities": [],
+      "insurance": {
+        "term_cover_inr": 10000000,
+        "health_cover_inr": 1000000
+      },
+      "dependents": 1,
+      "daughters_under_10": 0,
+      "tax_regime": "new",
+      "goals": [
+        {
+          "goal_id": "retirement",
+          "name": "Retirement corpus top-up",
+          "target_inr": 11000000,
+          "years": 3,
+          "current_savings_inr": 9000000
+        }
+      ],
+      "risk_answers": [
+        3,
+        3,
+        3,
+        2,
+        2
+      ],
+      "expected": {
+        "monthly_surplus_inr": 90000,
+        "emergency_fund_months": 6.7,
+        "flags": [
+          "term_insurance_gap"
+        ],
+        "first_action": "term_insurance_gap",
+        "risk_score": 13,
+        "risk_profile": "moderate",
+        "goals": [
+          {
+            "goal_id": "retirement",
+            "bucket": "medium",
+            "equity_share_pct": 20,
+            "required_monthly_sip_inr": 50284
+          }
+        ],
+        "total_required_monthly_sip_inr": 50284,
+        "goals_affordable": true,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp"
+        ],
+        "tax_saving_relevant": false
+      }
+    },
+    {
+      "persona_id": "p16_zero_savings_good_income",
+      "description": "Good salary but spends almost all of it, card debt, no savings",
+      "tests": "zero emergency fund; several gaps at once",
+      "age": 28,
+      "monthly_income_inr": 120000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 110000,
+      "emergency_fund_inr": 0,
+      "liabilities": [
+        {
+          "type": "credit_card",
+          "outstanding_inr": 40000,
+          "interest_rate_pct": 40.0,
+          "emi_inr": 4000
+        }
+      ],
+      "insurance": {
+        "term_cover_inr": 0,
+        "health_cover_inr": 0
+      },
+      "dependents": 0,
+      "daughters_under_10": 0,
+      "tax_regime": "new",
+      "goals": [
+        {
+          "goal_id": "emergency_fund",
+          "name": "Build emergency fund",
+          "target_inr": 684000,
+          "years": 2,
+          "current_savings_inr": 0
+        }
+      ],
+      "risk_answers": [
+        3,
+        3,
+        3,
+        2,
+        3
+      ],
+      "expected": {
+        "monthly_surplus_inr": 6000,
+        "emergency_fund_months": 0.0,
+        "flags": [
+          "emergency_fund_critical",
+          "high_interest_debt",
+          "health_insurance_gap"
+        ],
+        "first_action": "emergency_fund_critical",
+        "risk_score": 14,
+        "risk_profile": "moderate",
+        "goals": [
+          {
+            "goal_id": "emergency_fund",
+            "bucket": "short",
+            "equity_share_pct": 0,
+            "required_monthly_sip_inr": 30073
+          }
+        ],
+        "total_required_monthly_sip_inr": 30073,
+        "goals_affordable": false,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp"
+        ],
+        "tax_saving_relevant": false
+      }
+    },
+    {
+      "persona_id": "p17_education_loan_grad",
+      "description": "Recent graduate repaying an education loan",
+      "tests": "10.5% education loan is not high-interest; 3-year goal is medium",
+      "age": 25,
+      "monthly_income_inr": 60000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 30000,
+      "emergency_fund_inr": 100000,
+      "liabilities": [
+        {
+          "type": "education_loan",
+          "outstanding_inr": 800000,
+          "interest_rate_pct": 10.5,
+          "emi_inr": 12000
+        }
+      ],
+      "insurance": {
+        "term_cover_inr": 0,
+        "health_cover_inr": 500000
+      },
+      "dependents": 0,
+      "daughters_under_10": 0,
+      "tax_regime": "new",
+      "goals": [
+        {
+          "goal_id": "mba",
+          "name": "MBA fees",
+          "target_inr": 1500000,
+          "years": 3,
+          "current_savings_inr": 0
+        }
+      ],
+      "risk_answers": [
+        3,
+        3,
+        3,
+        2,
+        3
+      ],
+      "expected": {
+        "monthly_surplus_inr": 18000,
+        "emergency_fund_months": 2.4,
+        "flags": [
+          "emergency_fund_critical"
+        ],
+        "first_action": "emergency_fund_critical",
+        "risk_score": 14,
+        "risk_profile": "moderate",
+        "goals": [
+          {
+            "goal_id": "mba",
+            "bucket": "medium",
+            "equity_share_pct": 20,
+            "required_monthly_sip_inr": 44608
+          }
+        ],
+        "total_required_monthly_sip_inr": 44608,
+        "goals_affordable": false,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp"
+        ],
+        "tax_saving_relevant": false
+      }
+    },
+    {
+      "persona_id": "p18_small_town_teacher",
+      "description": "School teacher with two young daughters, prefers safety",
+      "tests": "conservative profile; SSY eligible; foundations clear",
+      "age": 42,
+      "monthly_income_inr": 50000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 35000,
+      "emergency_fund_inr": 250000,
+      "liabilities": [],
+      "insurance": {
+        "term_cover_inr": 6000000,
+        "health_cover_inr": 500000
+      },
+      "dependents": 2,
+      "daughters_under_10": 2,
+      "tax_regime": "old",
+      "goals": [
+        {
+          "goal_id": "daughters_education",
+          "name": "Daughters' education",
+          "target_inr": 1500000,
+          "years": 9,
+          "current_savings_inr": 200000
+        }
+      ],
+      "risk_answers": [
+        2,
+        1,
+        3,
+        1,
+        1
+      ],
+      "expected": {
+        "monthly_surplus_inr": 15000,
+        "emergency_fund_months": 7.1,
+        "flags": [],
+        "first_action": "invest_for_goals",
+        "risk_score": 8,
+        "risk_profile": "conservative",
+        "goals": [
+          {
+            "goal_id": "daughters_education",
+            "bucket": "long",
+            "equity_share_pct": 30,
+            "required_monthly_sip_inr": 13959
+          }
+        ],
+        "total_required_monthly_sip_inr": 13959,
+        "goals_affordable": true,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp",
+          "ssy"
+        ],
+        "tax_saving_relevant": true
+      }
+    },
+    {
+      "persona_id": "p19_aggressive_short_goal",
+      "description": "Aggressive young investor with only a short-term goal",
+      "tests": "short horizon forces 0% equity even for aggressive",
+      "age": 24,
+      "monthly_income_inr": 55000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 25000,
+      "emergency_fund_inr": 200000,
+      "liabilities": [],
+      "insurance": {
+        "term_cover_inr": 0,
+        "health_cover_inr": 500000
+      },
+      "dependents": 0,
+      "daughters_under_10": 0,
+      "tax_regime": "new",
+      "goals": [
+        {
+          "goal_id": "car",
+          "name": "First car",
+          "target_inr": 600000,
+          "years": 2,
+          "current_savings_inr": 0
+        }
+      ],
+      "risk_answers": [
+        4,
+        4,
+        3,
+        4,
+        4
+      ],
+      "expected": {
+        "monthly_surplus_inr": 30000,
+        "emergency_fund_months": 8.0,
+        "flags": [],
+        "first_action": "invest_for_goals",
+        "risk_score": 19,
+        "risk_profile": "aggressive",
+        "goals": [
+          {
+            "goal_id": "car",
+            "bucket": "short",
+            "equity_share_pct": 0,
+            "required_monthly_sip_inr": 26380
+          }
+        ],
+        "total_required_monthly_sip_inr": 26380,
+        "goals_affordable": true,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp"
+        ],
+        "tax_saving_relevant": false
+      }
+    },
+    {
+      "persona_id": "p20_late_start_retirement",
+      "description": "Late starter on retirement with a car loan",
+      "tests": "emergency gap; required SIP exceeds surplus so goal is unaffordable",
+      "age": 48,
+      "monthly_income_inr": 150000,
+      "other_monthly_inflow_inr": 0,
+      "monthly_expenses_inr": 80000,
+      "emergency_fund_inr": 300000,
+      "liabilities": [
+        {
+          "type": "car_loan",
+          "outstanding_inr": 500000,
+          "interest_rate_pct": 9.5,
+          "emi_inr": 15000
+        }
+      ],
+      "insurance": {
+        "term_cover_inr": 20000000,
+        "health_cover_inr": 1000000
+      },
+      "dependents": 2,
+      "daughters_under_10": 0,
+      "tax_regime": "new",
+      "goals": [
+        {
+          "goal_id": "retirement",
+          "name": "Retirement",
+          "target_inr": 30000000,
+          "years": 12,
+          "current_savings_inr": 1000000
+        }
+      ],
+      "risk_answers": [
+        3,
+        3,
+        3,
+        2,
+        3
+      ],
+      "expected": {
+        "monthly_surplus_inr": 55000,
+        "emergency_fund_months": 3.2,
+        "flags": [
+          "emergency_fund_gap"
+        ],
+        "first_action": "emergency_fund_gap",
+        "risk_score": 14,
+        "risk_profile": "moderate",
+        "goals": [
+          {
+            "goal_id": "retirement",
+            "bucket": "long",
+            "equity_share_pct": 60,
+            "required_monthly_sip_inr": 230096
+          }
+        ],
+        "total_required_monthly_sip_inr": 230096,
+        "goals_affordable": false,
+        "eligible_small_savings": [
+          "posa",
+          "potd_1y",
+          "potd_2y",
+          "potd_3y",
+          "potd_5y",
+          "rd_5y",
+          "pomis",
+          "nsc",
+          "ppf",
+          "kvp"
+        ],
+        "tax_saving_relevant": false
+      }
+    }
+  ]
+}

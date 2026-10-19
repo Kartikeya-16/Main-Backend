@@ -1,0 +1,96 @@
+# Arthsaathi Financial Advisor - rules configuration
+# Every threshold the advisor uses lives here, so each number can be shown and
+# defended in the viva. Values marked "assumption" are planning rules of thumb,
+# not regulations or forecasts.
+
+version: 1
+as_of: "2026-10-19"
+
+disclaimer: >-
+  Arthsaathi gives educational guidance based on the information you enter.
+  It is not investment advice from a SEBI-registered investment adviser.
+  Rates change often; confirm them with the bank or post office before investing.
+
+# ---------------------------------------------------------------- foundations
+emergency_fund:
+  target_months: 6        # assumption: months of (expenses + EMIs) to keep liquid
+  critical_months: 3      # below this, building the fund comes before paying extra on debt
+  counts_as_liquid: [savings_account, liquid_fund, bank_fd]
+
+debt:
+  high_interest_threshold_pct: 12.0   # assumption: above this, prepaying beats most investments
+  payoff_order: avalanche             # highest interest rate first
+
+insurance:
+  term_cover_multiple_of_annual_income: 10   # assumption; only checked when dependents > 0
+  min_health_cover_inr: 500000               # assumption: Rs 5 lakh floor per family
+
+# Order in which gaps are reported; the first one found becomes the user's first action.
+action_priority:
+  - budget_deficit
+  - emergency_fund_critical
+  - high_interest_debt
+  - health_insurance_gap
+  - term_insurance_gap
+  - emergency_fund_gap
+  - invest_for_goals
+
+# ---------------------------------------------------------------- risk profile
+risk_questionnaire:
+  scoring: sum_of_answers        # five questions, each answered 1-4, total 5-20
+  questions:
+    - id: q1_horizon
+      text: "When will you need most of this money?"
+      options: {1: "Within 1 year", 2: "1-3 years", 3: "3-7 years", 4: "More than 7 years"}
+    - id: q2_drawdown
+      text: "Your investment falls 20% in a month. What do you do?"
+      options: {1: "Sell everything", 2: "Sell some", 3: "Do nothing", 4: "Invest more"}
+    - id: q3_income_stability
+      text: "How stable is your income?"
+      options: {1: "No regular income", 2: "Irregular", 3: "Stable salary", 4: "Stable with multiple sources"}
+    - id: q4_experience
+      text: "Have you invested in mutual funds or shares before?"
+      options: {1: "Never", 2: "Only FDs or PPF", 3: "Some mutual funds", 4: "Regularly, including shares"}
+    - id: q5_goal_priority
+      text: "Which matters more to you?"
+      options: {1: "Never losing money", 2: "Mostly safety", 3: "Balance of growth and safety", 4: "Maximum growth"}
+  bands:
+    conservative: {min: 5, max: 9}
+    moderate: {min: 10, max: 14}
+    aggressive: {min: 15, max: 20}
+  caps:
+    no_income: conservative     # monthly income of 0 caps the profile at conservative
+    age_60_plus: moderate       # age 60 or more caps the profile at moderate
+
+# ---------------------------------------------------------------- goal allocation
+horizon_buckets:
+  short: {max_years_exclusive: 3}       # under 3 years
+  medium: {min_years: 3, max_years: 5}  # 3 to 5 years inclusive
+  long: {min_years_exclusive: 5}        # more than 5 years
+
+# Share of each goal's money that goes to equity, by bucket and risk profile.
+equity_share_pct:
+  short:  {conservative: 0,  moderate: 0,  aggressive: 0}
+  medium: {conservative: 0,  moderate: 20, aggressive: 40}
+  long:   {conservative: 30, moderate: 60, aggressive: 80}
+
+planning_assumptions:
+  inflation_pct: 6.0          # goal targets are entered in today's rupees and inflated
+  equity_return_pct: 10.0     # conservative long-run assumption, not a forecast
+  debt_return_pct: 6.5        # roughly in line with current FD and small-savings rates
+  min_monthly_sip_inr: 500
+
+# ---------------------------------------------------------------- products and tax
+deposit_safety:
+  dicgc_cover_inr: 500000     # per depositor per bank, principal + interest (DICGC)
+  sfb_rule: never_exceed_dicgc_cover_per_bank
+
+tax:
+  deduction_section: "Section 123 + Schedule XV, Income-tax Act 2025 (formerly Section 80C)"
+  deduction_limit_inr: 150000
+  applies_to_regime: old_only   # the new (default) regime does not allow this deduction
+  in_force_from: "2026-04-01"
+
+eligibility:
+  scss_min_age: 60
+  ssy_requires: daughter_under_10
